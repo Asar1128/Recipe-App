@@ -114,7 +114,7 @@ button[type="submit"]:hover {
   .recipe-description {
     font-size: 1rem;
     color: #555;
-    margin: 0 0 5px;`
+    margin: 0 0 5px;
   }
   
   /* No Data Message */
@@ -129,7 +129,7 @@ button[type="submit"]:hover {
     justify-content: left;
     padding:1rem 1rem;
     
-  
+}
   /* General Button Styles */
   .recipe-button {
     padding: 10px 15px;
