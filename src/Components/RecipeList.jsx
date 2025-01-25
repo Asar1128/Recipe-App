@@ -4,7 +4,6 @@ import "../Styles/index.css";
 import { useNavigate } from "react-router-dom";
 
 function RecipeList() {
-  // Get recipe data from Redux state
   const RecipeData = useSelector((state) => state.Recipe);
   const dispatch = useDispatch();
   const navigate = useNavigate();
