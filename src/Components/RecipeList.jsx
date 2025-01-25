@@ -1,17 +1,25 @@
-import { useSelector  , useDispatch} from "react-redux";
-import { updateRecipe , removeRecipe } from "../Store/Slices";
+import { useSelector, useDispatch } from "react-redux";
+import { removeRecipe } from "../Store/Slices";
 import "../Styles/index.css";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function RecipeList() {
+  // Get recipe data from Redux state
   const RecipeData = useSelector((state) => state.Recipe);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   console.log(RecipeData);
-   
+
   const HandleUpdateRecipe = (recipe) => {
     navigate(`/Add Recipe/${recipe.id}`);
+  };
+
+  const deleteRecipe = (id) => {
+    console.log("Id before deleting: ", id);
+    const updatedRecipes = RecipeData.filter((recipe) => recipe.id !== id);
+    localStorage.setItem("recipes", JSON.stringify(updatedRecipes)); 
+    dispatch(removeRecipe(id));
   };
 
   return (
@@ -41,14 +49,15 @@ function RecipeList() {
               <hr />
               {/* Buttons */}
               <div className="Recipe_btns">
-                <button 
-                className="recipe-button recipe-button-primary"
-                onClick={()=>HandleUpdateRecipe(recipe)}>
+                <button
+                  className="recipe-button recipe-button-primary"
+                  onClick={() => HandleUpdateRecipe(recipe)}
+                >
                   Update Recipe
                 </button>
-                <button 
-                className="recipe-button recipe-button-secondary"
-                onClick={()=>dispatch(removeRecipe(recipe.id))}
+                <button
+                  className="recipe-button recipe-button-secondary"
+                  onClick={() => deleteRecipe(recipe.id)}
                 >
                   Delete Recipe
                 </button>

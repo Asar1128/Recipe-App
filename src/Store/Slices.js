@@ -1,8 +1,8 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
 
-// Ensure Recipe is initialized as an empty array
+// Initialize state from localStorage or default to an empty array
 const initialState = {
-  Recipe: [],  // Start with an empty array for Recipe
+  Recipe: JSON.parse(localStorage.getItem("recipes")) || [],
 };
 
 export const Slices = createSlice({
@@ -10,11 +10,6 @@ export const Slices = createSlice({
   initialState,
   reducers: {
     addRecipe: (state, action) => {
-      // Ensure state.Recipe is always an array
-      if (!Array.isArray(state.Recipe)) {
-        state.Recipe = []; // Initialize as an empty array if it's not
-      }
-
       const recipe = {
         id: nanoid(),
         picture: action.payload.picture,
@@ -23,20 +18,30 @@ export const Slices = createSlice({
         Description: action.payload.Description,
       };
       state.Recipe.push(recipe);
+
+      // Update localStorage
+      localStorage.setItem("recipes", JSON.stringify(state.Recipe));
     },
     removeRecipe: (state, action) => {
       state.Recipe = state.Recipe.filter((recipe) => recipe.id !== action.payload);
+
+      // Update localStorage
+      localStorage.setItem("recipes", JSON.stringify(state.Recipe));
     },
     updateRecipe: (state, action) => {
       const { id, update } = action.payload;
-      console.log("Updating Recipe with Id =", id);
-      console.log("Updates =", update);
       state.Recipe = state.Recipe.map((recipe) =>
         recipe.id === id ? { ...recipe, ...update } : recipe
       );
+
+      // Update localStorage
+      localStorage.setItem("recipes", JSON.stringify(state.Recipe));
     },
     setRecipes: (state, action) => {
-      return { ...state, Recipe: action.payload };  // Ensure we return the Recipe as an array
+      state.Recipe = action.payload;
+
+      // Update localStorage
+      localStorage.setItem("recipes", JSON.stringify(state.Recipe));
     },
   },
 });
